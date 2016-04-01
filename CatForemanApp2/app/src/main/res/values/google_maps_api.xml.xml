@@ -1,0 +1,7 @@
+<resources>
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        AIzaSyBPcD5aK1fnnogUFaxP3YjIAT6XtzVEeZE
+    </string>
+
+    <string name="google_app_id">studied-reason-126523</string>
+</resources>
