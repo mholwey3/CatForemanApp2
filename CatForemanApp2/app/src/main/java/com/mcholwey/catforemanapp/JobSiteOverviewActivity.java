@@ -1,12 +1,12 @@
 package com.mcholwey.catforemanapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,32 +21,27 @@ import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler1;
 import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler2;
 import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler4;
 
-public class JobSiteOverviewActivity extends Activity {
+public class JobSiteOverviewActivity extends AppCompatActivity {
 
     TractorListAdapter tractorListAdapter;
     Context context = JobSiteOverviewActivity.this;
     ArrayList<Tractor> tractors = new ArrayList();
     ListView listView;
     HubProxy hub;
-    ImageButton fab;
-    boolean drawFAB = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_site_overview);
 
-        if(drawFAB) {
-            fab = (ImageButton) findViewById(R.id.mapsButton);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(JobSiteOverviewActivity.this, TractorMapActivity.class);
-                    startActivity(i);
-                }
-            });
-            drawFAB = false;
-        }
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.mapsButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(JobSiteOverviewActivity.this, TractorMapActivity.class);
+                startActivity(i);
+            }
+        });
 
         listView = (ListView) this.findViewById(R.id.listView);
         listView.setAdapter(new TractorListAdapter(context, tractors));

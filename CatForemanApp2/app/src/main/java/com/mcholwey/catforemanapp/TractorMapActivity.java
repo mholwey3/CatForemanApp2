@@ -3,8 +3,8 @@ package com.mcholwey.catforemanapp;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,7 +14,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class TractorMapActivity extends FragmentActivity implements OnMapReadyCallback{
+public class TractorMapActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     private GoogleMap tractorMap;
     private JobSiteOverviewActivity overview;
@@ -26,7 +26,7 @@ public class TractorMapActivity extends FragmentActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         overview = new JobSiteOverviewActivity();
     }
 

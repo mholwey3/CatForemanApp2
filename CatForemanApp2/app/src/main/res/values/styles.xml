@@ -2,11 +2,26 @@
   ~ Copyright 2015 Nathan Clark, Krzysztof Czelusniak, Michael Holwey, Dakota Leonard
   -->
 
+<!--<resources>-->
+    <!--<style name="catStyle" parent="android:Theme.Material.Light">-->
+        <!--<item name="android:colorPrimary">#FFEB3B</item>-->
+        <!--<item name="android:colorPrimaryDark">#FBC02D</item>-->
+        <!--<item name="android:colorAccent">#00BFA5</item>-->
+    <!--</style>-->
+<!--</resources>-->
+
 <resources>
 
-    <style name="catStyle" parent="android:Theme.Material.Light">
-        <item name="android:colorPrimary">#FFEB3B</item>
-        <item name="android:colorPrimaryDark">#FBC02D</item>
-        <item name="android:colorAccent">#00BFA5</item>
+    <!-- Base application theme. -->
+    <style name="catStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="colorAccent">@color/ColorAccent</item>
     </style>
+
+    <style name="catStyle.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="catStyle.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
