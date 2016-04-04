@@ -1,5 +1,7 @@
 package com.mcholwey.catforemanapp;
 
+import com.google.android.gms.maps.model.Marker;
+
 /**
  * Created by Michael, Dakota, Kryzys, and Nathan on 3/8/2016.
  */
@@ -12,6 +14,7 @@ public class Tractor {
     private double longitude;
     private double latitude;
     private Float speed;
+    private Marker marker;
 
     public enum TractorStateEnum{
         UNKNOWN,
@@ -92,6 +95,14 @@ public class Tractor {
 
     public void setSpeed(Float speed) {
         this.speed = speed;
+    }
+
+    public Marker getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
     }
 
     public String getDetails(){

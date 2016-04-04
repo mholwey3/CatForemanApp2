@@ -16,7 +16,6 @@ import java.util.List;
 public class TractorListAdapter extends BaseAdapter {
 
     public static List<Tractor> tractors = new ArrayList();
-    JobSiteOverviewActivity jobSiteOverviewActivity;
     LayoutInflater inflater;
     Context context;
 

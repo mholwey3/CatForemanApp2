@@ -1,6 +1,5 @@
 package com.mcholwey.catforemanapp;
 
-import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -11,13 +10,26 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.concurrent.ExecutionException;
+
+import microsoft.aspnet.signalr.client.Platform;
+import microsoft.aspnet.signalr.client.SignalRFuture;
+import microsoft.aspnet.signalr.client.http.android.AndroidPlatformComponent;
+import microsoft.aspnet.signalr.client.hubs.HubConnection;
+import microsoft.aspnet.signalr.client.hubs.HubProxy;
+import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler1;
+import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler2;
+import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler4;
 
 public class TractorMapActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     private GoogleMap tractorMap;
     private JobSiteOverviewActivity overview;
+    private HubProxy hub;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,25 +44,13 @@ public class TractorMapActivity extends AppCompatActivity implements OnMapReadyC
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    // This activity is NOT part of this app's task, so create a new task
-                    // when navigating up, with a synthesized back stack.
-                    TaskStackBuilder.create(this)
-                            // Add all of this activity's parents to the back stack
-                            .addNextIntentWithParentStack(upIntent)
-                                    // Navigate up to the closest parent
-                            .startActivities();
-                } else {
-                    // This activity is part of this app's task, so simply
-                    // navigate up to the logical parent activity.
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            // Handle "up" button behavior here.
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+            NavUtils.navigateUpTo(this, upIntent);
+            return true;
         }
+        // return true if you handled the button click, otherwise return false.
         return super.onOptionsItemSelected(item);
     }
 
@@ -61,9 +61,9 @@ public class TractorMapActivity extends AppCompatActivity implements OnMapReadyC
 
         for (Tractor t : overview.tractorListAdapter.tractors) {
             tempLatLng = new LatLng(t.getLatitude(), t.getLongitude());
-            tractorMap.addMarker(new MarkerOptions().position(tempLatLng).title(t.getName()));
+            t.setMarker(tractorMap.addMarker(new MarkerOptions().position(tempLatLng).title(t.getName()).snippet("State: " + t.getCurrentState())));
         }
 
-        tractorMap.moveCamera(CameraUpdateFactory.newLatLng(tempLatLng));
+        tractorMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tempLatLng, 12.0f));
     }
 }

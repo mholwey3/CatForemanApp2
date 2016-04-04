@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import microsoft.aspnet.signalr.client.Platform;
@@ -34,12 +36,21 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_site_overview);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.mapsButton);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton statsFAB = (FloatingActionButton) findViewById(R.id.statsButton);
+        statsFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(JobSiteOverviewActivity.this, TractorMapActivity.class);
-                startActivity(i);
+                Intent statsIntent = new Intent(JobSiteOverviewActivity.this, SiteStatisticsActivity.class);
+                startActivity(statsIntent);
+            }
+        });
+
+        FloatingActionButton mapFAB = (FloatingActionButton) findViewById(R.id.mapsButton);
+        mapFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mapIntent = new Intent(JobSiteOverviewActivity.this, TractorMapActivity.class);
+                startActivity(mapIntent);
             }
         });
 
@@ -173,6 +184,8 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
                 t.setLongitude(longitude);
                 t.setLatitude(latitude);
                 t.setSpeed(speed);
+                LatLng tempLatLng = new LatLng(latitude, longitude);
+                t.getMarker().setPosition(tempLatLng);
                 break;
             }else {
                 ++position;
@@ -187,6 +200,7 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
         for(Tractor t : tractors){
             if(t.getSerialNumber().equals(serialNum)){
                 t.setCurrentState(Tractor.TractorStateEnum.values()[stateNum]);
+                t.getMarker().setSnippet(Tractor.stateStrings[stateNum]);
                 break;
             }else {
                 ++position;
