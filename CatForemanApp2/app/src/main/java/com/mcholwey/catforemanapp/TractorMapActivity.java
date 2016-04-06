@@ -1,35 +1,21 @@
 package com.mcholwey.catforemanapp;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.concurrent.ExecutionException;
-
-import microsoft.aspnet.signalr.client.Platform;
-import microsoft.aspnet.signalr.client.SignalRFuture;
-import microsoft.aspnet.signalr.client.http.android.AndroidPlatformComponent;
-import microsoft.aspnet.signalr.client.hubs.HubConnection;
-import microsoft.aspnet.signalr.client.hubs.HubProxy;
-import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler1;
-import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler2;
-import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler4;
 
 public class TractorMapActivity extends AppCompatActivity implements OnMapReadyCallback{
 
-    private GoogleMap tractorMap;
+    public static GoogleMap tractorMap;
     private JobSiteOverviewActivity overview;
-    private HubProxy hub;
+    private Marker marker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +32,7 @@ public class TractorMapActivity extends AppCompatActivity implements OnMapReadyC
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             // Handle "up" button behavior here.
-            Intent upIntent = NavUtils.getParentActivityIntent(this);
-            NavUtils.navigateUpTo(this, upIntent);
+            onBackPressed();
             return true;
         }
         // return true if you handled the button click, otherwise return false.
@@ -57,13 +42,14 @@ public class TractorMapActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         tractorMap = googleMap;
+        tractorMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         LatLng tempLatLng = new LatLng(0,0);
 
         for (Tractor t : overview.tractorListAdapter.tractors) {
             tempLatLng = new LatLng(t.getLatitude(), t.getLongitude());
-            t.setMarker(tractorMap.addMarker(new MarkerOptions().position(tempLatLng).title(t.getName()).snippet("State: " + t.getCurrentState())));
+            t.setMarker(tractorMap.addMarker(new MarkerOptions().position(tempLatLng).title(t.getName()).snippet("State: " + t.getCurrentStateString(t.getCurrentState()))));
         }
 
-        tractorMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tempLatLng, 12.0f));
+        tractorMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tempLatLng, 18.0f));
     }
 }

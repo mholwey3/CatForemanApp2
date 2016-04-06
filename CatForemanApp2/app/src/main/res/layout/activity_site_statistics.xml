@@ -6,8 +6,34 @@
     statsTools:context=".SiteStatisticsActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/statsText"/>
+        android:id="@+id/siteStatsHeader"
+        android:textSize="40sp"
+        android:padding="15sp"
+        android:text="Site-wide Articulated Truck Statistics"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/siteDumpStatsText"
+            android:textSize="25sp"
+            android:padding="25sp"
+            android:layout_below="@+id/siteStatsHeader"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/siteLoadStatsText"
+            android:textSize="25sp"
+            android:padding="25sp"
+            android:layout_below="@+id/siteDumpStatsText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

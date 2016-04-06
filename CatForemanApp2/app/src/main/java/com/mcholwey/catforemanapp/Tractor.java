@@ -2,6 +2,7 @@ package com.mcholwey.catforemanapp;
 
 import com.google.android.gms.maps.model.Marker;
 
+
 /**
  * Created by Michael, Dakota, Kryzys, and Nathan on 3/8/2016.
  */
@@ -15,6 +16,9 @@ public class Tractor {
     private double latitude;
     private Float speed;
     private Marker marker;
+    private String loadStats;
+
+    private String dumpStats;
 
     public enum TractorStateEnum{
         UNKNOWN,
@@ -65,6 +69,27 @@ public class Tractor {
         this.currentState = currentState;
     }
 
+    public String getCurrentStateString(TractorStateEnum currentState){
+        if(currentState == TractorStateEnum.MOVING){
+            return "Moving";
+        }
+        else if(currentState == TractorStateEnum.STOPPED){
+            return "Stopped";
+        }
+        else if(currentState == TractorStateEnum.LOADING){
+            return "Loading";
+        }
+        else if(currentState == TractorStateEnum.STATIC_DUMP){
+            return "Static Dump";
+        }
+        else if(currentState == TractorStateEnum.MOVING_DUMP){
+            return "Moving Dump";
+        }
+        else{
+            return "Unknown";
+        }
+    }
+
     public boolean getIsActive() {
         return isActive;
     }
@@ -105,15 +130,31 @@ public class Tractor {
         this.marker = marker;
     }
 
+    public String getLoadStats() {
+        return loadStats;
+    }
+
+    public void setLoadStats(String loadStats) {
+        this.loadStats = loadStats;
+    }
+
+    public String getDumpStats() {
+        return dumpStats;
+    }
+
+    public void setDumpStats(String dumpStats) {
+        this.dumpStats = dumpStats;
+    }
+
     public String getDetails(){
         StringBuilder builder = new StringBuilder();
         builder.append("Serial Number: " + getSerialNumber());
         builder.append("\n\nName: " + getName());
         builder.append("\n\nModel: " + getModel());
         builder.append("\n\nState: " + (getCurrentState()!=null?stateStrings[getCurrentState().ordinal()]:"null"));
-        builder.append("\n\nLongitude: " + getLongitude());
-        builder.append("\n\nLatitude: " + getLatitude());
         builder.append("\n\nSpeed: " + getSpeed());
+        builder.append("\n\n" + getLoadStats());
+        builder.append("\n\n" + getDumpStats());
 
         return builder.toString();
     }
