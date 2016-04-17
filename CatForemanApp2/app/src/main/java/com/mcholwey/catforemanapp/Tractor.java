@@ -16,6 +16,7 @@ public class Tractor {
     private double latitude;
     private Float speed;
     private Marker marker;
+    private Statistic stat;
     private String loadStats;
 
     private String dumpStats;
@@ -36,6 +37,10 @@ public class Tractor {
             "Loading",
             "Moving Dump",
             "Static Dump"};
+
+    public Tractor(){
+        stat = new Statistic();
+    }
 
     public String getSerialNumber() {
         return serialNumber;
@@ -148,13 +153,15 @@ public class Tractor {
 
     public String getDetails(){
         StringBuilder builder = new StringBuilder();
+
         builder.append("Serial Number: " + getSerialNumber());
         builder.append("\n\nName: " + getName());
         builder.append("\n\nModel: " + getModel());
         builder.append("\n\nState: " + (getCurrentState()!=null?stateStrings[getCurrentState().ordinal()]:"null"));
         builder.append("\n\nSpeed: " + getSpeed());
-        builder.append("\n\n" + getLoadStats());
-        builder.append("\n\n" + getDumpStats());
+        builder.append("\n\nLatitude: " + getLatitude());
+        builder.append("\n\nLongitude: " + getLongitude());
+        builder.append("\n\n" + stat.getStatisticsDetails());
 
         return builder.toString();
     }

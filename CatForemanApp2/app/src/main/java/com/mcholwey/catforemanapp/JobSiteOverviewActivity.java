@@ -20,7 +20,6 @@ import microsoft.aspnet.signalr.client.hubs.HubProxy;
 import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler1;
 import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler2;
 import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler4;
-import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler5;
 
 public class JobSiteOverviewActivity extends AppCompatActivity {
 
@@ -205,8 +204,14 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
                     }
                 }
 
-                TextView textView = (TextView) findViewById(R.id.detailsTextView);
-                textView.setText(TractorListAdapter.tractors.get(position).getDetails());
+                try{
+                    TextView textView = (TextView) findViewById(R.id.detailsTextView);
+                    textView.setText(TractorListAdapter.tractors.get(position).getDetails());
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+
             }
         });
     }
@@ -227,8 +232,13 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
                     }
                 }
 
-                TextView textView = (TextView) findViewById(R.id.detailsTextView);
-                textView.setText(TractorListAdapter.tractors.get(position).getDetails());
+                try{
+                    TextView textView = (TextView) findViewById(R.id.detailsTextView);
+                    textView.setText(TractorListAdapter.tractors.get(position).getDetails());
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -20,29 +20,13 @@
         android:id="@+id/detailsTextView"
         android:layout_toEndOf="@+id/listView" />
 
-    <!--<TextView-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:textSize="20dp"-->
-        <!--android:padding="25dp"-->
-        <!--android:id="@+id/loadStatsTextView"-->
-        <!--android:layout_toEndOf="@+id/listView" />-->
-
-    <!--<TextView-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:textSize="20dp"-->
-        <!--android:padding="25dp"-->
-        <!--android:id="@+id/dumpStatsTextView"-->
-        <!--android:layout_toEndOf="@+id/listView" />-->
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/mapsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@android:drawable/ic_dialog_map"
-        android:layout_marginRight="@dimen/fab_margin"
+        android:src="@drawable/google_maps"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/detailsTextView" />
@@ -53,75 +37,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:src="@android:drawable/ic_menu_info_details"
-        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_above="@+id/mapsButton"
         android:layout_alignStart="@+id/mapsButton" />
 
 
 </RelativeLayout>
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:overviewTools="http://schemas.android.com/tools"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--overviewTools:context=".JobSiteOverviewActivity"-->
-    <!--android:launchMode="singleTop"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:weightSum="1">-->
-
-    <!--<ListView-->
-        <!--android:layout_width="300dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/listView" />-->
-
-
-    <!--<TextView-->
-        <!--android:layout_width="200dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:textSize="20sp"-->
-        <!--android:padding="25dp"-->
-        <!--android:id="@+id/detailsTextView" />-->
-
-    <!--<TextView-->
-        <!--android:layout_width="272dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:textSize="20sp"-->
-        <!--android:padding="25dp"-->
-        <!--android:id="@+id/loadStatsTextView"-->
-        <!--android:layout_weight="0.26" />-->
-
-    <!--<TextView-->
-        <!--android:layout_width="140dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:textSize="20sp"-->
-        <!--android:padding="25dp"-->
-        <!--android:id="@+id/dumpStatsTextView"-->
-        <!--android:layout_weight="0.74" />-->
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_gravity="bottom">-->
-
-        <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/statsButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="end|bottom"-->
-            <!--android:src="@android:drawable/ic_menu_info_details"-->
-            <!--android:layout_marginEnd="@dimen/fab_margin"-->
-            <!--android:layout_marginBottom="@dimen/fab_margin" />-->
-
-        <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/mapsButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--android:src="@android:drawable/ic_dialog_map"-->
-            <!--android:layout_marginEnd="@dimen/fab_margin"-->
-            <!--android:layout_marginBottom="@dimen/fab_margin" />-->
-
-    <!--</LinearLayout>-->
-
-<!--</LinearLayout>-->
