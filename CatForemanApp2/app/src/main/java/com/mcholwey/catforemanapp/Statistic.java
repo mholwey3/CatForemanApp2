@@ -2,6 +2,7 @@ package com.mcholwey.catforemanapp;
 
 /**
  * Created by Michael Holwey on 4/17/2016.
+ * Holds statistic information for the past 24 hours of activity
  */
 public class Statistic {
 

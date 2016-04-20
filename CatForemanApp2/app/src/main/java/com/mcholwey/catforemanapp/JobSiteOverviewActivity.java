@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
 import microsoft.aspnet.signalr.client.Platform;
 import microsoft.aspnet.signalr.client.SignalRFuture;
 import microsoft.aspnet.signalr.client.http.android.AndroidPlatformComponent;
@@ -30,21 +31,29 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
     String host = "http://bradley-capstone-app.azurewebsites.net";
     HubConnection connection = new HubConnection(host);
     HubProxy hub;
+    android.os.Handler handler;
+    final int REFRESH_DELAY = 10000; // Ten Seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_site_overview);
 
+        handler = new android.os.Handler();
+
+        //FAB to redirect application to Site-wide statistics activity
+        //Each FAB needs an on click listener which overrides an onClick method
         FloatingActionButton statsFAB = (FloatingActionButton) findViewById(R.id.statsButton);
         statsFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Start new activity by creating an intent that goes from current activity to new activity
                 Intent statsIntent = new Intent(JobSiteOverviewActivity.this, SiteStatisticsActivity.class);
                 startActivity(statsIntent);
             }
         });
 
+        //FAB to redirect application to Google Map activity
         FloatingActionButton mapFAB = (FloatingActionButton) findViewById(R.id.mapsButton);
         mapFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +63,25 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
             }
         });
 
+        //FAB to refresh the gps data
+        FloatingActionButton refreshGPSFAB = (FloatingActionButton) findViewById(R.id.refreshGPSButton1);
+        refreshGPSFAB.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                for (Tractor t : tractors) {
+                    hub.invoke("requestGPS", t.getSerialNumber());
+                }
+            }
+        });
+
+        requestGPSData();
+
+        requestStatData();
+
+        /* Only create the tractor list adapter and set each item's click event if this is the first
+         * time the app is being opened. This prevents the application from duplicating the list
+         * every time the JobSiteOverviewActivity is restarted.
+         */
         if(savedInstanceState == null) {
             listView = (ListView) this.findViewById(R.id.listView);
             tractorListAdapter = new TractorListAdapter(context, tractors);
@@ -66,6 +94,9 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
                 }
             });
 
+            /* Establish a connection with the SignalR backend
+             * Again, this should only happen once at the start of the application
+             */
             Platform.loadPlatformComponent(new AndroidPlatformComponent());
             hub = connection.createHubProxy("SensorHub");
             addSubscriptionHandlers();
@@ -79,6 +110,32 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    // Will refresh gps data from SignalR every REFRESH_DELAY seconds
+    public void requestGPSData() {
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                for (Tractor t : tractors) {
+                    hub.invoke("requestGPS", t.getSerialNumber());
+                }
+
+                handler.postDelayed(this, REFRESH_DELAY);
+            }
+        }, REFRESH_DELAY);
+    }
+
+    // Will refresh stats data from SignalR every REFRESH_DELAY seconds
+    public void requestStatData(){
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                for (Tractor t : tractors) {
+                    hub.invoke("requestStats", t.getSerialNumber());
+                }
+
+                handler.postDelayed(this, REFRESH_DELAY);
+            }
+        }, REFRESH_DELAY);
     }
 
     @Override
@@ -106,6 +163,11 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
     }
 
+    /* This is how we set up methods for the SignalR backend to call at appropriate times
+     * SubscriptionHandler1 is for methods with 1 argument
+     * SubscriptionHandler2 is for methods with 2 arguments ... and so on up to 5.
+     * The invocation of these methods will be handled by the SignalR backend
+     */
     public void addSubscriptionHandlers() {
         hub.on("addTractors",
                 new SubscriptionHandler1<Tractor[]>() {
@@ -145,32 +207,28 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
                 }
                 , String.class, Integer.class);
 
-        hub.on("updateMachineLoadStats",
-                new SubscriptionHandler4<Integer, Float, Float, Integer>() {
+        hub.on("updateStats",
+                new SubscriptionHandler2<String, Statistic>() {
                     @Override
-                    public void run(Integer numLoads, Float distanceToLoad, Float avgSpeedLoadToDump, Integer timeLoadToDump) {
-                        signalrUpdateLoadStats(numLoads, distanceToLoad, avgSpeedLoadToDump, timeLoadToDump);
+                    public void run(String serialNum, Statistic statistic) {
+                        updateStats(serialNum, statistic);
                     }
                 }
-                , Integer.class, Float.class, Float.class, Integer.class);
-
-        hub.on("updateMachineDumpStats",
-                new SubscriptionHandler4<Integer, Float, Float, Integer>() {
-                    @Override
-                    public void run(Integer numDumps, Float distanceToDump, Float avgSpeedDumpToLoad, Integer timeDumpToLoad) {
-                        signalrUpdateDumpStats(numDumps, distanceToDump, avgSpeedDumpToLoad, timeDumpToLoad);
-                    }
-                }
-                , Integer.class, Float.class, Float.class, Integer.class);
+                , String.class, Statistic.class);
     }
 
+    /* Add an articulated truck to the site-wide list of tractors
+     * Handled on the SignalR end
+     */
     public void addTractors(Tractor[] tractors){
         for (Tractor t : tractors) {
             tractorListAdapter.tractors.add(t);
-            System.out.println(tractorListAdapter.tractors);
         }
     }
 
+    /* Remove an articulated truck from the list
+     * Handled on the SignalR end
+     */
     public void removeTractor(String serialNum){
         for (Tractor t : tractors) {
             if(t.getSerialNumber().equals(serialNum)){
@@ -180,6 +238,11 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
         }
     }
 
+    /* Update GPS information such as longitude, latitude, and speed EVERY TIME signalR receives new
+     * data from an articulated truck. We are offering an alternative way to refresh this information
+     * either by pressing a FAB to request updated gps data or by requesting this data every X seconds
+     * to reduce the amount of cellular data used throughout the day.
+     */
     public void updateGPS(final String serialNum, final double longitude, final double latitude, final Float speed){
 
         this.runOnUiThread(new Runnable() {
@@ -188,7 +251,6 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
                 int position = 0;
                 for (Tractor t : tractorListAdapter.tractors) {
                     if (t.getSerialNumber().equals(serialNum)) {
-                        System.out.println("UPDATING GEO");
                         //Set GPS data
                         t.setLongitude(longitude);
                         t.setLatitude(latitude);
@@ -211,11 +273,40 @@ public class JobSiteOverviewActivity extends AppCompatActivity {
                 catch(Exception e){
                     e.printStackTrace();
                 }
-
             }
         });
     }
 
+    public void updateStats(final String serialNum, final Statistic stat){
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int position = 0;
+                for (Tractor t : tractors) {
+                    if(t.getSerialNumber().equals(serialNum)) {
+                        t.setStat(stat);
+
+                        break;
+                    }
+                    else{
+                        ++position;
+                    }
+                }
+
+                try{
+                    TextView textView = (TextView) findViewById(R.id.detailsTextView);
+                    textView.setText(TractorListAdapter.tractors.get(position).getDetails());
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /* Update the state of a particular articulated truck
+     * Handled on the SignalR end
+     */
     public void updateStateInfo(final String serialNum, final int stateNum){
         this.runOnUiThread(new Runnable() {
             @Override

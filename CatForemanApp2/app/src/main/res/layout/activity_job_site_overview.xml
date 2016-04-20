@@ -21,13 +21,24 @@
         android:layout_toEndOf="@+id/listView" />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/refreshGPSButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@android:drawable/ic_menu_mapmode"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_above="@+id/mapsButton"
+        android:layout_alignEnd="@+id/detailsTextView" />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/mapsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:src="@drawable/google_maps"
-        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/detailsTextView" />
 
@@ -37,10 +48,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:src="@android:drawable/ic_menu_info_details"
-        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
-        android:layout_above="@+id/mapsButton"
-        android:layout_alignStart="@+id/mapsButton" />
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_above="@+id/refreshGPSButton1"
+        android:layout_alignStart="@+id/refreshGPSButton1" />
 
 
 </RelativeLayout>

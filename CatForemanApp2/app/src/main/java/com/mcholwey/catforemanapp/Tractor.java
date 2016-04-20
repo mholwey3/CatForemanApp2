@@ -151,6 +151,14 @@ public class Tractor {
         this.dumpStats = dumpStats;
     }
 
+    public Statistic getStat() {
+        return stat;
+    }
+
+    public void setStat(Statistic stat) {
+        this.stat = stat;
+    }
+
     public String getDetails(){
         StringBuilder builder = new StringBuilder();
 
