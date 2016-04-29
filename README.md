@@ -10,6 +10,7 @@ The parameters are objects, not primitives (so use Float not float).
 After the SubscriptionHandler, list out each Object.class
 
 Example of a SubscriptionHandler1
+'''
 hub.on("signalRMethod1",
   SubscriptionHandler1<Float>(){
       @override
@@ -17,8 +18,10 @@ hub.on("signalRMethod1",
         code to run
       }
   }, Float.class);
+  '''
   
 Example of a SubscriptionHandler2
+'''
 hub.on("signalRMethod2",
   SubscriptionHandler1<Float, Int>(){
       @override
@@ -26,3 +29,4 @@ hub.on("signalRMethod2",
         code to run
       }
   }, Float.class, Int.class);
+  '''
