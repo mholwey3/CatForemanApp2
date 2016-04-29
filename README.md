@@ -32,3 +32,5 @@ hub.on("signalRMethod2",
         }
     }, Float.class, Int.class);
   ```
+
+And so on and so forth up to SubscriptionHandler5.
