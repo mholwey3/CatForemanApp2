@@ -10,23 +10,23 @@ The parameters are objects, not primitives (so use Float not float).
 After the SubscriptionHandler, list out each Object.class
 
 Example of a SubscriptionHandler1
-'''
+```
 hub.on("signalRMethod1",
-  SubscriptionHandler1<Float>(){
-      @override
-      public void run(Float number){
-        code to run
-      }
-  }, Float.class);
-  '''
+    SubscriptionHandler1<Float>(){
+        @override
+        public void run(Float number){
+            code to run
+        }
+    }, Float.class);
+  ```
   
 Example of a SubscriptionHandler2
-'''
+```
 hub.on("signalRMethod2",
-  SubscriptionHandler1<Float, Int>(){
-      @override
-      public void run(Float number, Int count){
-        code to run
-      }
-  }, Float.class, Int.class);
-  '''
+    SubscriptionHandler1<Float, Int>(){
+        @override
+        public void run(Float number, Int count){
+            code to run
+        }
+    }, Float.class, Int.class);
+  ```
